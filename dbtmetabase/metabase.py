@@ -123,6 +123,7 @@ class MetabaseClient:
         use_http: bool = False,
         verify: Union[str, bool] = None,
         session_id: str = None,
+        additional_headers: str = None,
         exclude_sources: bool = False,
     ):
         """Constructor.
@@ -136,6 +137,7 @@ class MetabaseClient:
             use_http {bool} -- Use HTTP instead of HTTPS. (default: {False})
             verify {Union[str, bool]} -- Path to certificate or disable verification. (default: {None})
             session_id {str} -- Metabase session ID. (default: {None})
+            additional_headers {str} -- HTTP Header to be injected. (default: {None}).
             exclude_sources {bool} -- Exclude exporting sources. (default: {False})
         """
         self.base_url = f"{'http' if use_http else 'https'}://{host}"
@@ -143,6 +145,16 @@ class MetabaseClient:
         self.session.verify = verify
         adaptor = HTTPAdapter(max_retries=Retry(total=3, backoff_factor=0.5))
         self.session.mount(self.base_url, adaptor)
+        
+        # inject http headers to the session object
+        if additional_headers is not None:
+            headers = {}
+            try:
+                headers = json.loads(additional_headers)
+            except ValueError as e:
+                raise ValueError("Invalid json input for 'additional_headers': {}".format(additional_headers))
+            for k in headers:
+                self.session.headers[k] = headers[k]
         session_header = session_id or self.get_session_id(user, password)
         self.session.headers["X-Metabase-Session"] = session_header
 

@@ -248,6 +248,12 @@ def shared_opts(func: Callable) -> Callable:
         help="Metabase password",
     )
     @click.option(
+        "--metabase_additional_headers",
+        required=False,
+        type=click.STRING,
+        help="Metabase additional headers. Example: '{\"x-api-key\":\"your-api-key\"}'",
+    )
+    @click.option(
         "--metabase_session_id",
         metavar="TOKEN",
         envvar="MB_SESSION_ID",
@@ -548,6 +554,7 @@ def models(
     dbt_includes: Optional[Iterable] = None,
     dbt_excludes: Optional[Iterable] = None,
     metabase_session_id: Optional[str] = None,
+    metabase_additional_headers: Optional[str] = None,
     metabase_use_http: bool = False,
     metabase_verify: Optional[str] = None,
     metabase_sync: bool = True,
@@ -610,6 +617,7 @@ def models(
         user=metabase_user,
         password=metabase_password,
         session_id=metabase_session_id,
+        additional_headers=metabase_additional_headers,
         use_http=metabase_use_http,
         verify=metabase_verify,
         database=metabase_database,
@@ -672,6 +680,7 @@ def exposures(
     dbt_includes: Optional[Iterable] = None,
     dbt_excludes: Optional[Iterable] = None,
     metabase_session_id: Optional[str] = None,
+    metabase_additional_headers: Optional[str] = None,
     metabase_use_http: bool = False,
     metabase_verify: Optional[str] = None,
     metabase_sync: bool = True,
@@ -732,6 +741,7 @@ def exposures(
         user=metabase_user,
         password=metabase_password,
         session_id=metabase_session_id,
+        additional_headers=metabase_additional_headers,
         use_http=metabase_use_http,
         verify=metabase_verify,
         database=metabase_database,

@@ -22,6 +22,7 @@ class MetabaseInterface:
         user: str,
         password: str,
         session_id: Optional[str] = None,
+        additional_headers: Optional[str] = None,
         use_http: bool = False,
         verify: Optional[Union[str, bool]] = True,
         sync: bool = True,
@@ -49,6 +50,7 @@ class MetabaseInterface:
         self.user = user
         self.password = password
         self.session_id = session_id
+        self.additional_headers = additional_headers
         # Metabase additional connection opts
         self.use_http = use_http
         self.verify = verify
@@ -88,6 +90,7 @@ class MetabaseInterface:
             use_http=self.use_http,
             verify=self.verify,
             session_id=self.session_id,
+            additional_headers=self.additional_headers,
             exclude_sources=self.exclude_sources,
         )
 
